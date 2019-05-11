@@ -1,34 +1,23 @@
-import React, {Component} from "react"
+import React, {Component, useState} from "react"
 import "./Header.scss"
 import logo from "../../Images/Logos/headerLogo.png"
 import hamburger from "../../Images/Logos/iconfinder-icon.svg"
-export default class Header extends Component{
-    constructor(){
-        super()
-        this.state = {
-            width:window.innerWidth,
-            responsive:false,
-            toggleDropDown:false
-        }
-    }
-    componentWillMount() {
-        window.addEventListener('resize', this.handleWindowSizeChange);
-    }
-    handleWindowSizeChange = () => {
-        this.setState({ width: window.innerWidth });
+export default function Header(){
+    const [width, setWidth] = useState(window.innerWidth)
+    const [toggleDropDown, setDropDown] = useState(false)
+    
+    
+    let handleWindowSizeChange = () => {
+        setWidth(window.innerWidth);
     };
-    componentWillUnmount() {
-        window.removeEventListener('resize', this.handleWindowSizeChange);
-    }
-    handleDropDown = () =>{
-        this.setState({
-            toggleDropDown:!this.state.toggleDropDown
-        })
-        console.log(this.state.toggleDropDown)
-    }
-    render(){
-        const { width, toggleDropDown} = this.state
+    window.addEventListener('resize', handleWindowSizeChange);
+
+    let handleDropDown = () =>{
+        setDropDown(
+            !toggleDropDown
+        )
         console.log(toggleDropDown)
+    }
         return(
             <header>
             <div className = "header-parent-container">   
@@ -53,7 +42,7 @@ export default class Header extends Component{
                         </div>
                     :
                         <div className = "Dropdown">
-                            <img onClick = {() =>{this.handleDropDown()}} src = {hamburger}/>
+                            <img onClick = {() =>{handleDropDown()}} src = {hamburger}/>
                         </div>
                     }
                 </ul>
@@ -73,5 +62,4 @@ export default class Header extends Component{
             </div>
         </header>
         )
-    }
 }
