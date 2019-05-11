@@ -1,0 +1,193 @@
+@import url('https://fonts.googleapis.com/css?family=Raleway:200,400|Roboto');
+.header-parent-container{
+    width:100vw;
+    height:100px;
+    display:flex;
+    justify-content:space-between;
+    align-items: center;
+    border-bottom: 1px rgb(187, 180, 180) solid;
+    border-top:2px rgb(97, 97, 230) solid;
+    box-shadow: 0px 2px 4px rgba(0,0,0,0.1);
+    font-family: 'Raleway', sans-serif;
+}
+
+li > p{
+    font-size:40px;
+    font-weight: 200;
+    color:rgb(97, 97, 230);
+}
+
+.header-parent-container > div > ul{
+    width:300px;
+    height:100%;
+    display:flex;
+    justify-content:space-evenly;
+    align-items: center;
+    list-style:none;
+}
+.header-parent-container__logo-container{
+    width:300px;
+    height:100%;
+    display:flex;
+    justify-content:space-evenly;
+    align-items: center;
+    list-style:none;
+}
+
+.header-button{
+    width:100px;
+    height:50%;
+    max-width:100px;
+    max-height:40px;
+    padding:5px;
+    border:none;
+    border-radius:4px;
+    cursor: pointer;
+    outline: none;
+    font-family: 'Raleway', sans-serif;
+    color:rgb(252, 252, 252);
+}
+.hamburger-container{
+    height:100%;
+    width:40%;
+    min-width:100px;
+    max-width:300px;
+}
+.button-container{
+    width:100%;
+    height:100%;
+    display:flex;
+    justify-content: space-evenly;
+    align-items: center;
+    list-style: none;
+}
+
+.login{
+    background-color:rgb(219, 219, 224);
+}
+.signup{
+    background-color:rgba(97, 97, 230, 0.74);
+}
+.hide-Drop{
+    flex-direction: column;
+    display:flex;
+    justify-content: center;
+    align-items: space-evenly;
+    visibility: hidden;
+    height:0px;
+    transition: .5s;
+    transform: scaleY(0px);
+}
+.show-Drop{
+    width:100%;
+    height:100px;
+    display:flex;
+    flex-direction:column;
+    justify-content: center;
+    align-items: space-evenly;
+    transition: .5s;
+    transform: scaleY(100px);
+    border-bottom: 1px rgb(187, 180, 180) solid;
+    box-shadow: 0px 2px 4px rgba(0,0,0,0.1);
+}
+.mobile-links{
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    width:100%;
+    height:40px;
+    transition: .5s;
+    transform: scaleY(10px);
+    text-decoration: none;
+}
+.mobile-links-hidden{
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Raleway', sans-serif;
+    text-decoration: none;
+    width:100%;
+    height:40px;
+    transition: .5s;
+    transform: scaleY(0);
+}
+.dropdown-footer-hide{
+    transition: .5s;
+    transform: scaleY(0);
+}
+.dropdown-ul{
+    flex-direction: column;
+    width:100%;
+    height:100%;
+    font-family: 'Raleway', sans-serif;
+}
+.dropdown-ul > li{
+    display:flex;
+    justify-content: center;
+    align-items: space-evenly;
+    list-style:none;
+    width:100%;
+    margin-bottom:1px;
+}
+.dropdown-footer{
+    width:100%;
+    height:30px;
+    border-radius:0px,0px,4px,4px;
+    background-color: hsl(210, 9%,96%);
+    border-top:1px rgb(239, 240, 241) solid;
+}
+.signup-mobile{
+    background-color:rgb(228, 241, 254);
+}
+@media(max-width:600px){
+    .title{
+        font-size: 28px;
+    }
+}
+
+@media(max-width:500px){
+    
+    img{
+        width:40px;
+        height:auto;
+    }
+    .title{
+        font-size:20px;
+        margin-left:5px;
+        margin-right:20px;
+    }
+    .header-parent-container__logo-container{
+        min-width:200px;
+        padding:0;
+        display:flex;
+        justify-content: space-evenly;
+        align-items: center;
+        margin-right:40px;
+    }
+    .header-parent-container{
+        min-width:100vw;
+        width:100vw;
+    }
+    .hamburger-container{
+        width:300px;
+        min-width:100px;
+        display: flex;
+        align-items: center;
+        justify-content:center;
+    } 
+    .button-container{
+        width:100%;
+    }
+}
+@media(max-width:400px){
+    .header-parent-container__logo-container{
+        margin-left:20px;
+        margin-right:10px;
+        width:150px;
+        min-width:150px;
+    }
+    .title{
+        width:100px;
+        margin-left:5px;
+    }
+}
