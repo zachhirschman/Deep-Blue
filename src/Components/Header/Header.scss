@@ -169,8 +169,8 @@ li > p{
         width:100vw;
     }
     .hamburger-container{
-        width:300px;
-        min-width:100px;
+        width:100px;
+        min-width:70px;
         display: flex;
         align-items: center;
         justify-content:center;
@@ -189,5 +189,9 @@ li > p{
     .title{
         width:100px;
         margin-left:5px;
+    }
+    .hamburger-container{
+        width:70px;
+        min-width:40px;
     }
 }

@@ -1,4 +1,5 @@
 import React, {Component} from "react"
+import {Link} from "react-router-dom"
 import "./Header.scss"
 import logo from "../../Images/Logos/headerLogo.png"
 import hamburger from "../../Images/Logos/iconfinder-icon.svg"
@@ -26,6 +27,10 @@ export default class Header extends Component{
         })
         console.log(this.state.toggleDropDown)
     }
+    navigateToPage = (location) =>{
+        console.log(location)
+        window.location = location
+    }
     render(){
         const { width, toggleDropDown} = this.state
         console.log(toggleDropDown)
@@ -34,7 +39,7 @@ export default class Header extends Component{
             <div className = "header-parent-container">   
                 <ul className = "header-parent-container__logo-container">
                     <li>
-                        <img src ={logo} alt ="not found"/>
+                        <Link to = "/"><img src ={logo} alt ="not found"/></Link>
                     </li>
                     <li>
                         <p className = "title">Deep Blue</p>
@@ -45,10 +50,10 @@ export default class Header extends Component{
                         width > 500 ?
                         <div className = "button-container">
                             <li>
-                                <button className = "header-button login">Log in</button>
+                                <Link to = "/login"><button className = "header-button login">Log in</button></Link>
                             </li>
                             <li>
-                                <button className = "header-button signup">Sign up</button>
+                                <Link to = "/register"><button className = "header-button signup">Sign up</button></Link>
                             </li>
                         </div>
                     :
@@ -61,10 +66,10 @@ export default class Header extends Component{
             <div className = {toggleDropDown ? "show-Drop":"hide-Drop"}>
                     <ul className = {toggleDropDown ? "dropdown-ul" : "hide-dropdown-ul"}>
                         <li className = {toggleDropDown ? "links":"hide-links"}>
-                            <a className = {toggleDropDown ? "mobile-links login-mobile" : "mobile-links-hidden"} href = "#">Log in</a>    
+                            <Link className = {toggleDropDown ? "mobile-links login-mobile" : "mobile-links-hidden"} to = "/login"><a  href = "#">Log in</a></Link> 
                         </li>
                         <li className = {toggleDropDown ? "links":"hide-links"}>    
-                            <a className = {toggleDropDown ? "mobile-links signup-mobile" : "mobile-links-hidden"} href = "#">Sign Up</a>
+                            <Link  className = {toggleDropDown ? "mobile-links signup-mobile" : "mobile-links-hidden"}to = "/register"><a  href = "#">Sign Up</a></Link>
                         </li>
                     </ul>
                     <footer className = {toggleDropDown ? "dropdown-footer" : "dropdown-footer-hide"}>
