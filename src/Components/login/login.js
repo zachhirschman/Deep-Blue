@@ -1,24 +1,33 @@
 import React, {useState} from "react"
 import "./login.scss"
 import logo from "../../Images/Logos/headerLogo.png"
-import {Link} from "react-router-dom"
+import {Link, Redirect} from "react-router-dom"
 import Form from "../Hooks/Form"
 import Axios from "axios";
 
 export default function Login(){
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
-    const [value, setValue] = useState('')
+    const [value, setValue] = useState(false)
     let login = () =>{
-        if(!email || !password) return;
-        let body = {
-            email,
-            password
+        console.log(email, password)
+        if(email == "" || password == "") return;
+        else{
+            console.log("not empty,", email, password)
+            let body = {
+                email,
+                password
+            }
+            Axios.post('/login',body).then(response =>{
+                if(response.data.status == "success"){
+                    console.log(response.data)
+                    setValue(true)
+                }
+                console.log(response.data)
+            })
         }
-        Axios.post('/login',body).then(response =>{
-            console.log("Logged in :", response.data)
-        })
-        setValue("")
+        
+        
     }
     let handleChange = (value) =>{
         setEmail(value)
@@ -46,6 +55,7 @@ export default function Login(){
                     </div>
                 </div>
             </div>
+            {value ? <Redirect to = "/dashboard"/> : null}
         </div>
     )
 }

@@ -16,7 +16,9 @@ export default function Home(){
                 <source src = {bgVideo} type = "video/mp4"></source>
             </video>
             <div className = "home-parent-content">
+            <div className = "overlay">
                 <h1 className = "fade header-text">The ocean is beautiful, let's keep it that way</h1>
+            </div>
                 <div className = {width >500 ? "content-container" : "content-container-mobile"}>
                     <div className = {width >500 ?"text-holder" : "text-holder-mobile"}>
                         <p className = "fade p-text">
