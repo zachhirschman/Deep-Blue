@@ -26,7 +26,28 @@
     border-radius:4px;
     position: relative;
 }
-input{
+.login-input-container{
+    width:80%;
+    border:1px hsl(200,25%,88%) solid;
+    outline:none;
+    padding:10px;
+    border-radius:4px;
+    background-color:hsl(200,33%,96%);
+    display:flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.login-input{
+    border:none;
+    background-color:transparent;
+    width:90%;
+    padding:5px;
+    outline: none;
+    margin-left:5px;
+}
+
+input:not(.login-input){
     width:80%;
     border:1px hsl(200,25%,88%) solid;
     outline:none;

@@ -13,7 +13,7 @@ module.exports = {
                         req.session.user = {
                             email:response[0].email
                         }
-                        res.status(200).json({status:"success"})
+                        res.status(200).json({status:"success",user:req.session.user})
                     }
                     else{
                         res.status(403).json({message:"Incorrect Password"})
@@ -49,6 +49,12 @@ module.exports = {
         })
     },
     getSession:(req,res,next) =>{
+        console.log("Sending session:", req.session.user)
         res.status(200).json(req.session.user)
+    },
+    logout:(req,res,next) =>{
+        console.log("Logging out")
+        req.session.destroy()
+        res.status(200).send("logged out")
     }
 }

@@ -1,4 +1,4 @@
-import React, {useState} from "react"
+import React, {useState, useEffect} from "react"
 import bgVideo from "../../Images/Mare - 22183.mp4"
 import pollution from "../../Images/pollution.png"
 import {Line} from "react-chartjs-2"
@@ -9,16 +9,18 @@ export default function Home(){
     let handleWindowChange = () =>{
         setWidth(window.innerWidth)
     }
+    useEffect(() =>{
+        return () =>{
+            setWidth(null)
+        }
+    },[])
     window.addEventListener("resize", handleWindowChange )
     return(
-        <div>
+        <div className = "home-root-parent">
             <video className = "bgVideo" autoPlay muted loop>
                 <source src = {bgVideo} type = "video/mp4"></source>
             </video>
             <div className = "home-parent-content">
-            <div className = "overlay">
-                <h1 className = "fade header-text">The ocean is beautiful, let's keep it that way</h1>
-            </div>
                 <div className = {width >500 ? "content-container" : "content-container-mobile"}>
                     <div className = {width >500 ?"text-holder" : "text-holder-mobile"}>
                         <p className = "fade p-text">

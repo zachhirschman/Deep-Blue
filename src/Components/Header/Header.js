@@ -1,46 +1,45 @@
-import React, {Component} from "react"
+import React, {useState,useEffect,useReducer} from "react"
 import {Link} from "react-router-dom"
 import "./Header.scss"
 import logo from "../../Images/Logos/headerLogo.png"
 import hamburger from "../../Images/Logos/iconfinder-icon.svg"
 import Axios from "axios";
-export default class Header extends Component{
-    constructor(){
-        super()
-        this.state = {
-            width:window.innerWidth,
-            responsive:false,
-            toggleDropDown:false,
-            currentUser:[1]
-        }
-    }
-    componentDidMount(){
+import reducer from "../../Redux/Reducer";
+import initialState from "../../Redux/initialState";
+
+export default function Header(){
+    const [width,setWidth] = useState(window.innerWidth)
+    const [responsive,setResponsive] = useState(false)
+    const [toggleDropDown,setToggle] = useState(false)
+    const [state,dispatch] = useReducer(reducer,initialState)
+
+    useEffect(() => {
         Axios.get("/api/get-user-data").then(response =>{
             console.log("current User: ",response.data)
+            dispatch({type:"update_user",payload:response.data})
+        })
+        return () =>{
+            window.removeEventListener('resize', this.handleWindowSizeChange);
+        }
+    }, [])
+
+    window.addEventListener('resize', () =>{
+        setWidth(window.innerWidth)
+    })
+
+
+    let handleDropDown = () =>{
+        setToggle(!toggleDropDown)
+    }
+
+    let logout = () =>{
+        Axios.post('/api/log-out/').then(response =>{
+            console.log("Logged out my homie")
+            dispatch({type:'update_user', payload:""})
         })
     }
-    componentWillMount() {
-        window.addEventListener('resize', this.handleWindowSizeChange);
-    }
-    handleWindowSizeChange = () => {
-        this.setState({ width: window.innerWidth });
-    };
-    componentWillUnmount() {
-        window.removeEventListener('resize', this.handleWindowSizeChange);
-    }
-    handleDropDown = () =>{
-        this.setState({
-            toggleDropDown:!this.state.toggleDropDown
-        })
-        console.log(this.state.toggleDropDown)
-    }
-    navigateToPage = (location) =>{
-        console.log(location)
-        window.location = location
-    }
-    render(){
-        const { width, toggleDropDown, currentUser} = this.state
-        console.log(toggleDropDown)
+
+
         return(
             <header>
             <div className = "header-parent-container">   
@@ -56,7 +55,7 @@ export default class Header extends Component{
                     if there isn't, show the login or register buttons.
                 */}
                 {
-                    currentUser.length ?
+                    state.currentUser != ""?
 
                     <ul className = {width >700 ? "logged-user-parent__desktop" : "hamburger-container"}>
                         {
@@ -65,27 +64,28 @@ export default class Header extends Component{
                                     <Link to = "/contributions" className = "link">
                                         <h3>Contributions</h3>
                                     </Link>
-                                    <Link className = "link">
+                                    <Link to ="/dashboard" className = "link">
                                         <h3>Community</h3>
                                     </Link>
                                     <Link className = "link">
-                                        <h3>Logout</h3>
+                                        <button style = {{border:"none",backgroundColor:"none"}} onClick = {logout}><h3>Logout</h3></button>
                                     </Link>
                                 </ul>
                             :
                             <div className = "Dropdown">
-                                <img onClick = {() =>{this.handleDropDown()}} src = {hamburger}/>
+                                <img onClick = {() =>{handleDropDown()}} src = {hamburger}/>
                             </div>
                         }
                     </ul>
 
                     :
+                    
                     <ul className = "hamburger-container">
                     {
                         width > 500 ?
                         <div className = "button-container">
                             <li>
-                                <Link to = "/login"><button className = "header-button login">Log in</button></Link>
+                                <Link className = "header-button login" to = "/login">Log in</Link>
                             </li>
                             <li>
                                 <Link to = "/register"><button className = "header-button signup">Sign up</button></Link>
@@ -93,49 +93,44 @@ export default class Header extends Component{
                         </div>
                     :
                         <div className = "Dropdown">
-                            <img onClick = {() =>{this.handleDropDown()}} src = {hamburger}/>
+                            <img onClick = {() =>{handleDropDown()}} src = {hamburger}/>
                         </div>
                     }
                 </ul>}
             </div>
             {
-                currentUser.length?
+                state.currentUser !== ""?
+                <div className = "drop-container">
                 <div className = {toggleDropDown ? "show-Drop":"hide-Drop"}>
                         <ul className = {toggleDropDown ? "dropdown-ul" : "hide-dropdown-ul"}>
                 
-                            <li className = {toggleDropDown ? "links":"hide-links"}>
-                                <Link className = {toggleDropDown ? "mobile-links signup-mobile" : "mobile-links-hidden"}><a  href = "#">Contributions</a></Link> 
+                            <li className = "links">
+                                <Link to ="/contributions" className = "mobile-links signup-mobile">Contributions</Link> 
                             </li>
-                            <li className = {toggleDropDown ? "links":"hide-links"}>    
-                                <Link  className = {toggleDropDown ? "mobile-links signup-mobile" : "mobile-links-hidden"}><a  href = "#">Community</a></Link>
+                            <li className = "links">    
+                                <Link  className = "mobile-links signup-mobile" to = "/dashboard">Community</Link>
                             </li>
-                            <li className = {toggleDropDown ? "links":"hide-links"}>    
-                                <Link  className = {toggleDropDown ? "mobile-links signup-mobile" : "mobile-links-hidden"}><a  href = "#">Logout</a></Link>
+                            <li className = "links">    
+                                <Link  className = "mobile-links signup-mobile" to = "/"><button style = {{border:"none",backgroundColor:"none"}} onClick = {logout}>Logout</button></Link>
                             </li>
                         </ul>
-                        <footer className = {toggleDropDown ? "dropdown-footer" : "dropdown-footer-hide"}>
-
-                        </footer>
+                </div>
                 </div>
 
                 :
 
                 <div className = {toggleDropDown ? "show-Drop":"hide-Drop"}>
-                        <ul className = {toggleDropDown ? "dropdown-ul" : "hide-dropdown-ul"}>
+                        <ul className = "dropdown-ul">
                 
-                            <li className = {toggleDropDown ? "links":"hide-links"}>
-                                <Link className = {toggleDropDown ? "mobile-links login-mobile" : "mobile-links-hidden"} to = "/login"><a  href = "#">Log in</a></Link> 
+                            <li className = "links">
+                                <Link className ="mobile-links login-mobile" to = "/login">Log in</Link> 
                             </li>
-                            <li className = {toggleDropDown ? "links":"hide-links"}>    
-                                <Link  className = {toggleDropDown ? "mobile-links signup-mobile" : "mobile-links-hidden"}to = "/register"><a  href = "#">Sign Up</a></Link>
+                            <li className = "links">    
+                                <Link  className = "mobile-links signup-mobile" to = "/register">Sign Up</Link>
                             </li>
                         </ul>
-                        <footer className = {toggleDropDown ? "dropdown-footer" : "dropdown-footer-hide"}>
-
-                        </footer>
                 </div>
             }
         </header>
         )
-    }
 }
