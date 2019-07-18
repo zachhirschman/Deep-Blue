@@ -23,7 +23,7 @@ export default function Contributions(){
                 pointStrokeColor:'rgb(97, 97, 230)',
                 pointHighlightFill:'rgb(97, 97, 230)',
                 // no data for now
-                data:[1,2,0,0.5,0,1]
+                data:[1,2,0,0.5,0,1,2,2,3,4,6,9,1]
             }
         ]
     }
@@ -53,13 +53,16 @@ export default function Contributions(){
 
                 <div className = "Contributions-parent__desktop__content-parent">
                         <div className = "Contributions-parent__desktop__personal-info-parent">
-                            <div>
+                            <div className = "Contributions-parent__desktop__personal-info-footer">
 
                             </div>
                         </div>
                         <div className = "Contributions-parent__desktop__Line-parent">
-                            <Line options = {options} data = {dataSet}/>
+                            <div>
+                                <Line options = {options} data = {dataSet}/>
+                            </div>
                         </div>
+                        
                 </div>
 
                 :
