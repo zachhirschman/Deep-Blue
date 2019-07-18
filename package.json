@@ -8,6 +8,8 @@
     "body-parser": "^1.19.0",
     "chart.js": "^2.8.0",
     "dotenv": "^8.0.0",
+    "emoji-js": "^3.4.1",
+    "emoji-picker-react": "^2.1.1",
     "express": "^4.16.4",
     "express-session": "^1.16.1",
     "http-proxy-middleware": "^0.19.1",
@@ -16,8 +18,12 @@
     "react": "^16.8.6",
     "react-chartjs-2": "^2.7.6",
     "react-dom": "^16.8.6",
+    "react-images-upload": "^1.2.7",
+    "react-redux": "^7.0.3",
+    "react-responsive-modal": "^4.0.1",
     "react-router-dom": "^5.0.0",
     "react-scripts": "3.0.1",
+    "redux": "^4.0.1",
     "socket.io": "^2.2.0"
   },
   "scripts": {
@@ -26,7 +32,6 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
-  "proxy": "http://localhost:4000",
   "main": "server/index.js",
   "eslintConfig": {
     "extends": "react-app"

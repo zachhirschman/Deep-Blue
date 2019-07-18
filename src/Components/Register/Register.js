@@ -1,15 +1,18 @@
-import React, {useState, useEffect} from "react"
+import React, {useState, useEffect, useReducer} from "react"
 // import "./login.scss"
 import logo from "../../Images/Logos/headerLogo.png"
 import {Link, Redirect} from "react-router-dom"
 import Axios from "axios";
-import Form from "../Hooks/Form"
+import FormInput from "../Hooks/Form"
 import {UserContext} from "../../Context/userContext"
+import initialState from "../../Redux/initialState";
+import reducer from "../../Redux/Reducer";
 
 export default function Register(props){
-    let email = Form("")
-    let password = Form("")
+    let email = FormInput("")
+    let password = FormInput("")
     const [redirect, setRedirect] = useState(false)
+    const [state,dispatch] = useReducer(reducer,initialState)
     
     useEffect(() =>{
         console.log("Component Mounted!", props)
@@ -25,32 +28,42 @@ export default function Register(props){
                 password:password.value
             }
             console.log("Registering with ", body)
-            Axios.post("/register",body).then(response =>{
+            Axios.post("/api/register",body).then(response =>{
                 if(response.data.status == "success"){
+                    dispatch({type:"update_user",payload:response.data})
                     setRedirect(true)
                 }
             })
         }
     }
+
+    console.log("State in redux:", state)
     return(
-        // <UserContext>
         <div className = "authentication-parent">
             <div className = "login-form">
                 <h1 className = "authentication-header">Welcome to Deep Blue!</h1>
 
-                <div className = "input-container">
-                    <input {...email} placeholder = "Email"/>
-                    <input {...password} placeholder = "Password" type = "password"/>
-                    <button onClick = {register} className = "authentication-button register">
+                    <div className = "login-input-container">
+                        <img src="https://img.icons8.com/small/16/000000/filled-message.png"/>
+                        <input className = "login-input" {...email} placeholder = "Email"/>
+                    </div>
+
+                    <div className = "login-input-container">
+                        <img src="https://img.icons8.com/small/16/000000/lock.png"/>
+                        <input className = "login-input" {...password} placeholder = "Password" type = "password"/>
+                    <div/>
+                    
+                <button onClick = {register} className = "authentication-button register">
                         Register
-                    </button>
+                </button>
+
                     <div className = "authentication-footer">
                         <p>Already have an account?</p><Link className = "emphasis" to = "/login">Login</Link>
                     </div>
+
                 </div>
             </div>
             {redirect ? <Redirect to = "/dashboard"/> : null}
         </div>
-        // </UserContext>
     )
 }

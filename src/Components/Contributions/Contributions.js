@@ -4,8 +4,10 @@ import {Line} from "react-chartjs-2"
 
 export default function Contributions(){
     const [ width, setWidth] = useState(window.innerWidth)
+    
     let useEffect = () =>{
         // Make axios request to get user's information
+
     }
     let handleWindowResize = () =>{
         setWidth(window.innerWidth)

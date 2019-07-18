@@ -1,7 +1,13 @@
+.home-root-parent{
+    height:calc(100vh - 100px);
+    width:100vw;
+    margin-top:100px;
+}
 .bgVideo{
     width: 100vw;
-    height: 20%;
+    height: 40%;
     object-fit: cover;
+    z-index:-1;
     
 }
 .overlay{
@@ -37,7 +43,7 @@
 .home-parent-content{
     position: relative;
     width:100vw;
-    height:100vh;
+    height:60vh;
     background-color:rgb(240, 234, 234);
     flex-direction: column;
     display: flex;
