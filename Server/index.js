@@ -7,6 +7,7 @@ const massive = require('massive')
 const Dc = require("./Controller/getData")
 const Uc = require('./UserController/userController')
 const session = require("express-session")
+const fileUpload = require("express-fileupload")
 
 require("dotenv").config()
 // Provisions
@@ -16,6 +17,9 @@ app.use(session({
     saveUninitialized:false,
     resave:false
 }))
+
+// File uploader
+app.use(fileUpload())
 
 // Connect to Database
 massive(
@@ -43,6 +47,7 @@ app.get('/api/filter',Dc.filterBy)
 
 //Post
 app.post('/api/create-Issue', Dc.createIssue)
+app.post('/api/upload-image',Dc.uploadImage)
 
 const port = process.env.port
 server.listen(port, () => console.log(`Listening on port ${port}`))

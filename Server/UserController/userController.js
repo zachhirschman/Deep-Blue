@@ -10,9 +10,7 @@ module.exports = {
             if(response.length){
                 bcrypt.compare(password, response[0].password).then(matched =>{
                     if(matched){
-                        req.session.user = {
-                            email:response[0].email
-                        }
+                        req.session.user = response[0]
                         res.status(200).json({status:"success",user:req.session.user})
                     }
                     else{
@@ -31,9 +29,8 @@ module.exports = {
         bcrypt.hash(password, saltRounds).then(hashedPassword =>{
             db.Insert.Register([email,hashedPassword]).then((response)=>{
                 console.log("registered user: ",response[0])
-                req.session.user = {
-                    email
-                }
+                req.session.user = response[0]
+                
                 res.status(200).json({status:"success"})
             }).catch(error =>{
                 if(error.message.match(/duplicate key/)){

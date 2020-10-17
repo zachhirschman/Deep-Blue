@@ -16,7 +16,6 @@ export default function Login(){
         console.log(email, password)
         if(email == "" || password == "") return;
         else{
-            console.log("not empty,", email, password)
             let body = {
                 email,
                 password
@@ -25,7 +24,6 @@ export default function Login(){
                 if(response.data.status == "success"){
                     console.log(response.data)
                     dispatch({type:"update_user",payload:response.data.user})
-                    console.log("Redux state:", state)
                     setValue(true)
                 }
                 console.log(response.data)
@@ -49,11 +47,11 @@ export default function Login(){
                 <div className = "input-container">
                     <div className = "login-input-container">
                         <img src="https://img.icons8.com/small/16/000000/filled-message.png"/>
-                        <input className = "login-input" onChange = {(e) => handleChange(e.target.value)} placeholder = "Email"/>
+                        <input className = "login-input" onChange = {(e) => handleChange(e.target.value)} placeholder = "Email" name="email"/>
                     </div>
                     <div className = "login-input-container">
                         <img src="https://img.icons8.com/small/16/000000/lock.png"/>
-                        <input className = "login-input" onChange = {(e) => handlePwChange(e.target.value)} placeholder = "Password" type = "password"/>
+                        <input className = "login-input" onChange = {(e) => handlePwChange(e.target.value)} placeholder = "Password" type = "password" name="password"/>
                     </div>
                     <div>
                         <a className = "forgot-password" href = "#">Forgot your password?</a>

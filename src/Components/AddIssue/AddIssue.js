@@ -1,33 +1,64 @@
-import React, {useState, useEffect} from "react"
+import React, {useState, useEffect, useReducer} from "react"
+import { useHistory } from "react-router-dom";
 import "./AddIssue.scss"
 import Form from "../Hooks/Form"
 import Axios from "axios";
 import imageUpload from "../../Images/image-upload.png"
 import Urgency from "../Urgency/Urgency"
-import ImageUploader from 'react-images-upload';
+import FormInput from "../Hooks/Form.js"
+import reducer from "../../Redux/Reducer"
+import initialState from "../../Redux/initialState"
+import ImageModal from "../ImageModal/ImageModal";
 
 export default function AddIssue(props){
 
     const [urgencyValue,setUrgencyValue] = useState(0)
     const [images, setImages] = useState([])
     const [toggleUploader, setToggleUploader] = useState(true)
-    useEffect(() =>{
-        // const box = '60,20:58,17';
-        // Axios.get(`https://api.stormglass.io/v1/weather/area?box=${box}`, {
-        //     headers:{
-        //         'Authorization':"41994dfa-8c92-11e9-9c0e-0242ac130004-41994f08-8c92-11e9-9c0e-0242ac130004"
-        //     }
-        // }).then(response =>{
-        //     console.log("Got ocean data, :", response.data)
-        // })
-    },[])
-    let onImageDrop = (picture) =>{
-        let copy = images.slice()
-        console.log("picture: ", picture)
-        setImages(copy.push(picture))
+    const [state,dispatch] = useReducer(reducer,initialState)
+    const nameValue = FormInput('')
+    const descriptionValue = FormInput('')
+    const imageValue = FormInput('')
+    const history = useHistory();
+
+    useEffect(() => {
+        Axios.get("/api/get-user-data").then(response =>{
+            if(!response.data){
+                console.log("No user, going home");
+                history.push("/");
+            }
+            dispatch({type:"update_user",payload:response.data})
+        })
+        
+    }, [])
+    let onImageDrop = (pictcha) =>{
+       console.log(pictcha)
+        setImages(pictcha);
     }
-    console.log("Urgency number: ", urgencyValue)
-    console.log("Images: ", images)
+    let postIssue = () =>{
+        console.log("images: ", images)
+        Axios.post('/api/upload-image',{files:images}).then(response => {
+           console.log("response: ", response.data)
+       })
+
+        // const payload = {
+        //     user_id:state.currentUser.user_id,
+        //     name:nameValue.value,
+        //     thumbnail:imageValue.value || images[0] || "",
+        //     images,
+        //     description:descriptionValue.value,
+        //     urgency:urgencyValue,
+        //     comments:[],
+        //     lat:0.0,
+        //     lng:0.0,
+        //     attendees:0
+        // }
+        // console.log("Payload before sending:", payload)
+        // Axios.post("/api/create-Issue", payload).then(response =>{
+        //     dispatch({type:"update_posts",payload:response.data})
+        // })
+    }
+
     return(
         <div className = "add-issue-parent">
             <header>
@@ -36,28 +67,19 @@ export default function AddIssue(props){
             <div className = "add-issue-form">
                 {
                     toggleUploader ?
-                <span className = "uploader-parent">
-                    <p className = "upload-text">Upload Issue Images:</p>
-                    <button onClick = {() => setToggleUploader(!toggleUploader)} className = "upload-img btn"><img src = {imageUpload}/></button>
-                </span>
+                    <span className = "uploader-parent">
+                        <p className = "upload-text">Upload Issue Images:</p>
+                        <button onClick = {() => setToggleUploader(!toggleUploader)} className = "upload-img btn"><img src = {imageUpload}/></button>
+                    </span>
                 :
-                <span className = "uploader-parent">
-                <ImageUploader
-                    withPreview = {true}
-                    withIcon={true}
-                    buttonText='Choose images'
-                    onChange={onImageDrop}
-                    imgExtension={['.jpg', '.gif', '.png', '.gif']}
-                    maxFileSize={5242880}
-                />
-                <button onClick = {() => setToggleUploader(!toggleUploader)}>Cancel</button>
-                </span>
+                    <ImageModal onImageDrop ={onImageDrop} toggleUploader={toggleUploader} setToggleUploader = {setToggleUploader}/>
                 }
-                <input placeholder = "Name"/>
+                <input placeholder = "Thumbnail" {...imageValue}/>
+                <input placeholder = "Name" {...nameValue}/>
                 <Urgency setUrgencyValueFn = {setUrgencyValue} urgencyValue = {urgencyValue}/>
-                <textarea placeholder = "Describe your Issue"/>
+                <textarea placeholder = "Describe your Issue" {...descriptionValue}/>
             </div>
-            <button className = "submit-issue btn" onClick = {props.openModal}>Submit Issue</button>
+            <button className = "submit-issue btn" onClick = {postIssue}>Submit Issue</button>
         </div>
     )
 

@@ -3,7 +3,7 @@ import "./Dashboard.scss"
 import FilterBar from "../FilterBar/FilterBar";
 import Issue from "../Issue/Issue";
 import AddIssue from "../AddIssue/AddIssue";
-import { Link, Redirect } from "react-router-dom"
+import { Link, Redirect, useHistory } from "react-router-dom"
 import Axios from "axios";
 import Loader from "../Loader/Loader"
 import Modal from "react-responsive-modal"
@@ -19,6 +19,7 @@ export function Dashboard(props){
     const [listStyle, setListStyle] = useState(false)
     const [modalState, setModalState] = useState(false)
     const [reduxState,dispatch] = useReducer(reducer,initialState)
+    const history = useHistory();
 
     const handleRoute = (location) =>{
         setRedirect(true)
@@ -26,6 +27,10 @@ export function Dashboard(props){
     }
     useEffect(() =>{
         Axios.get('/api/get-user-data/').then(response =>{
+            if(!response.data){
+                console.log("No user, going home");
+                history.push("/");
+            }
             dispatch({type:'update_user', payload:response.data})
         })
         Axios.get('/api/get-issues').then(response =>{

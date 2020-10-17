@@ -7,6 +7,9 @@ import Loader from "../Loader/Loader"
 import emoji from "../../Images/emoji-selector.png"
 import EmojiPicker from "emoji-picker-react"
 import JSEMOJI from "emoji-js"
+import Comment from "../Comment/Comment";
+import Urgency from '../Urgency/Urgency';
+// import { } from 'marked'
 
 export default function IssuePage(props){
     
@@ -19,7 +22,7 @@ export default function IssuePage(props){
     let jsemoji = new JSEMOJI()
 
     jsemoji.img_set = 'emojione'
-    // jsemoji.img_sets.emojione.path = 'https://cdn.jsdelivr.net/emojione/assets/3.0/png/32/';
+    jsemoji.img_sets.emojione.path = 'https://cdn.jsdelivr.net/emojione/assets/3.0/png/32/';
     jsemoji.supports_css = false;
     jsemoji.allow_native = false;
     jsemoji.replace_mode = 'unified';
@@ -72,9 +75,7 @@ export default function IssuePage(props){
         if(postToShow[0].comments){
             mappedComments = postToShow[0].comments.map(comment =>{
                 return(
-                    <div>
-                        {comment}
-                    </div>
+                    <Comment comment={comment} />
                 )
             })
             
@@ -82,19 +83,20 @@ export default function IssuePage(props){
         else mappedComments = null
     }
 
-    // else mappedComments = null
-    console.log("Post to show: ", postToShow)
+    console.log("Post: ", postToShow)
     return(
         <div className = "IssuePage">
-            <div className = "main-parent">
+            <div className = "main-parent flex">
                 { postToShow.length ?
-                    <div className = "content-parent">
+                    <div className = "content-parent flex">
                         <img className = "main-parent_image" src = {postToShow[0].thumbnail}/>
-                        <div className = "main-parent_header">
-                            <h1>{postToShow[0].name}</h1>
-                            <p>
-                                {postToShow[0].description}
-                            </p>
+                        <div className = "main-parent_header flex">
+                            <h1 className ="main-parent_name" >{postToShow[0].name}</h1>
+                            <Urgency urgencyValue={postToShow[0].urgency}/>
+                            <div className ="main-parent_description-parent">
+                                <h2 className ="main-parent_description-header">Description:</h2>
+                                <p className = "description">{postToShow[0].description}</p>
+                            </div>
                         </div>
                     </div>
                 : 
@@ -105,10 +107,10 @@ export default function IssuePage(props){
             </div>
             <div className = "comment-parent">
             { width > 600 ? null : mobileTabs}
-                <div>
+                {/* <div> */}
                     {mappedComments}
-                </div>
-                <hr className = "divider"/>
+                {/* </div> */}
+                {/* <hr className = "divider"/> */}
                 {emojiToggle ? <EmojiPicker onEmojiClick = {(emoji, data) => handleEmojiClick(emoji,data)} className = 'emoji-picker' preload/> : null}
                 <div className = "newComment-parent">
                     <div className = "input-parent">

@@ -1,5 +1,5 @@
 import React, {useState,useEffect,useReducer} from "react"
-import {Link} from "react-router-dom"
+import {Link , useHistory} from "react-router-dom"
 import "./Header.scss"
 import logo from "../../Images/Logos/headerLogo.png"
 import hamburger from "../../Images/Logos/iconfinder-icon.svg"
@@ -9,19 +9,29 @@ import initialState from "../../Redux/initialState";
 
 export default function Header(){
     const [width,setWidth] = useState(window.innerWidth)
+    const [reRender, setRerender] = useState(1);
     const [responsive,setResponsive] = useState(false)
     const [toggleDropDown,setToggle] = useState(false)
     const [state,dispatch] = useReducer(reducer,initialState)
+    const history = useHistory();
 
     useEffect(() => {
         Axios.get("/api/get-user-data").then(response =>{
-            console.log("current User: ",response.data)
+            if(!response.data){
+                console.log("No user, going home");
+                history.push("/");
+            }
             dispatch({type:"update_user",payload:response.data})
+            setWidth(window.innerWidth);
         })
         return () =>{
-            window.removeEventListener('resize', this.handleWindowSizeChange);
+           
         }
     }, [])
+
+    useEffect(() => {
+        setRerender(reRender +1);
+    }, state);
 
     window.addEventListener('resize', () =>{
         setWidth(window.innerWidth)
@@ -34,11 +44,12 @@ export default function Header(){
 
     let logout = () =>{
         Axios.post('/api/log-out/').then(response =>{
-            console.log("Logged out my homie")
             dispatch({type:'update_user', payload:""})
+            history.push("/");
         })
     }
 
+    console.log("Rendering header ... ... ... ... ...")
 
         return(
             <header>
@@ -68,7 +79,7 @@ export default function Header(){
                                         <h3>Community</h3>
                                     </Link>
                                     <Link className = "link">
-                                        <button style = {{border:"none",backgroundColor:"none"}} onClick = {logout}><h3>Logout</h3></button>
+                                        <h3 onClick = {logout}>Logout</h3>
                                     </Link>
                                 </ul>
                             :
@@ -85,10 +96,10 @@ export default function Header(){
                         width > 500 ?
                         <div className = "button-container">
                             <li>
-                                <Link className = "header-button login" to = "/login">Log in</Link>
+                                <Link className = "header-button link" to = "/login">Log in</Link>
                             </li>
                             <li>
-                                <Link to = "/register"><button className = "header-button signup">Sign up</button></Link>
+                                <Link to = "/register" className="header-button link"><h3>Sign Up</h3></Link>
                             </li>
                         </div>
                     :
@@ -111,7 +122,7 @@ export default function Header(){
                                 <Link  className = "mobile-links signup-mobile" to = "/dashboard">Community</Link>
                             </li>
                             <li className = "links">    
-                                <Link  className = "mobile-links signup-mobile" to = "/"><button style = {{border:"none",backgroundColor:"none"}} onClick = {logout}>Logout</button></Link>
+                                <Link  className = "mobile-links signup-mobile" to = "/"><h3 onClick = {logout} >Log out</h3></Link>
                             </li>
                         </ul>
                 </div>
