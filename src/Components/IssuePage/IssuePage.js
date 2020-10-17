@@ -9,7 +9,6 @@ import EmojiPicker from "emoji-picker-react"
 import JSEMOJI from "emoji-js"
 import Comment from "../Comment/Comment";
 import Urgency from '../Urgency/Urgency';
-// import { } from 'marked'
 
 export default function IssuePage(props){
     
