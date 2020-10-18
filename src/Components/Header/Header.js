@@ -49,8 +49,6 @@ export default function Header(){
         })
     }
 
-    console.log("Rendering header ... ... ... ... ...")
-
         return(
             <header>
             <div className = "header-parent-container">   

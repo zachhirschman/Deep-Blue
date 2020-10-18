@@ -17,6 +17,7 @@ export default function IssuePage(props){
     let [commentText, setCommentText] = useState('')
     let [width,setWidth] = useState(window.innerWidth)
     const [state, dispatch] = useReducer(reducer,initialState)
+    const [noPosts, setNoPosts] = useState(false);
 
     let jsemoji = new JSEMOJI()
 
@@ -29,6 +30,9 @@ export default function IssuePage(props){
 
     useEffect(() =>{
         Axios.get('/api/get-issues').then(response =>{
+            if(!response.data.length){
+                setNoPosts(true);
+            }
             dispatch({type:'update_posts', payload:response.data})
         })
     },[])
@@ -69,6 +73,12 @@ export default function IssuePage(props){
         </ul>
     )
 
+    let noPostsElement = (
+        <div>
+            <h1>No Issues</h1>
+        </div>
+    );
+
     let mappedComments
     if(postToShow.length){
         if(postToShow[0].comments){
@@ -82,7 +92,6 @@ export default function IssuePage(props){
         else mappedComments = null
     }
 
-    console.log("Post: ", postToShow)
     return(
         <div className = "IssuePage">
             <div className = "main-parent flex">
@@ -99,18 +108,30 @@ export default function IssuePage(props){
                         </div>
                     </div>
                 : 
+
+                noPosts ? 
+                    
+                    noPostsElement
+                :
                 
                 <Loader/> 
                 
                 }
             </div>
             <div className = "comment-parent">
-            { width > 600 ? null : mobileTabs}
-                {/* <div> */}
+            { 
+            width > 600 ? null : mobileTabs}
                     {mappedComments}
-                {/* </div> */}
-                {/* <hr className = "divider"/> */}
-                {emojiToggle ? <EmojiPicker onEmojiClick = {(emoji, data) => handleEmojiClick(emoji,data)} className = 'emoji-picker' preload/> : null}
+                
+                {
+                    emojiToggle ? 
+                        <EmojiPicker 
+                            onEmojiClick = {(emoji, data) => handleEmojiClick(emoji,data)} 
+                            className = 'emoji-picker' preload/> 
+                        : 
+                    null
+                }
+                
                 <div className = "newComment-parent">
                     <div className = "input-parent">
                         <input value = {commentText} onChange = {(e) => setCommentText(e.target.value)} onKeyDown ={(e) => sendComment(e)}/>

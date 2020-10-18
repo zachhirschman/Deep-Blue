@@ -19,6 +19,8 @@ export function Dashboard(props){
     const [listStyle, setListStyle] = useState(false)
     const [modalState, setModalState] = useState(false)
     const [reduxState,dispatch] = useReducer(reducer,initialState)
+    const [noPosts, setNoPosts] = useState(false);
+
     const history = useHistory();
 
     const handleRoute = (location) =>{
@@ -28,39 +30,35 @@ export function Dashboard(props){
     useEffect(() =>{
         Axios.get('/api/get-user-data/').then(response =>{
             if(!response.data){
-                console.log("No user, going home");
                 history.push("/");
             }
             dispatch({type:'update_user', payload:response.data})
         })
+
         Axios.get('/api/get-issues').then(response =>{
-            console.log("Got issues:", response.data)
+            if(!response.data.length){
+                setNoPosts(true);
+            }
             dispatch({type:'update_posts', payload:response.data})
-            console.log("iSSUES IN STATE: ", issues)
-            console.log("iSSUES IN REDUX: ", reduxState)
             setIssues(response.data)
             
         })
+
     },[])
     let searchIssues = (term) =>{
         console.log("term: ",term)
         let filteredArr =  issues.filter(e =>{
-            console.log("Checking :", e.name)
             return e.name.toUpperCase().startsWith(term.toUpperCase())
         })
-        console.log("Filtered : ", filteredArr)
         setFiltered(filteredArr)
         
     }
     let filterBy = (term) =>{
-        console.log("term: ", term)
         Axios.get(`/api/filter?term=${term}`).then(response =>{
-            console.log("Filtered By: ", response.data)
             setIssues(response.data)
         })
     }
     let openModal = () =>{
-        console.log("Modal triggered open")
         setModalState(true)
     }
     let closeModal = () =>{
@@ -73,7 +71,13 @@ export function Dashboard(props){
         'justify-content':'center',
         'align-items':'center'
     }
-    console.log("Redix State: ", reduxState)
+
+    let noPostsElement = (
+        <div className="no-posts-found">
+            <h1>No Issues Found!</h1>
+        </div>
+    );
+
     return(
         <div className = "dashboard-parent">
             <FilterBar filterByFn = {filterBy} searchIssuesFn = {searchIssues} setListStyle = {setListStyle} listStyle = {listStyle}/>
@@ -110,8 +114,10 @@ export function Dashboard(props){
                                 )
                             })
                         :
+                        noPosts ? 
+                            noPostsElement
+                            :
                         <Loader/>
-                        
                     }
                 
                 </div>

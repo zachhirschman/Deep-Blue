@@ -40,7 +40,9 @@ export default function Register(props){
     console.log("State in redux:", state)
     return(
         <div className = "authentication-parent">
+
             <div className = "login-form">
+
                 <h1 className = "authentication-header">Welcome to Deep Blue!</h1>
 
                     <div className = "login-input-container">
@@ -51,18 +53,17 @@ export default function Register(props){
                     <div className = "login-input-container">
                         <img src="https://img.icons8.com/small/16/000000/lock.png"/>
                         <input className = "login-input" {...password} placeholder = "Password" type = "password"/>
-                    <div/>
+                    </div>
                     
-                <button onClick = {register} className = "authentication-button register">
-                        Register
-                </button>
+                    <button onClick = {register} className = "authentication-button register">
+                            Register now
+                    </button>
 
                     <div className = "authentication-footer">
                         <p>Already have an account?</p><Link className = "emphasis" to = "/login">Login</Link>
                     </div>
 
                 </div>
-            </div>
             {redirect ? <Redirect to = "/dashboard"/> : null}
         </div>
     )
