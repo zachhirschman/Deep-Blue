@@ -1,0 +1,43 @@
+.Modal-overlay{
+    position: fixed;
+    width:100vw;
+    height:100vh;
+    top:0;
+    right:0;
+    bottom:0;
+    left:0;
+    background-color: #58585825;
+    z-index: 2;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+
+    .Modal-parent{
+        position: relative;
+        width:80%;
+        height:70%;
+        background-color: white;
+        box-shadow: 0px 2px 4px rgba(0,0,0,0.1);
+
+        .close-modal{
+            width:100%;
+            position: relative;
+            display:flex;
+            justify-content: flex-start;
+            align-items: center;
+
+            img{
+                position: absolute;
+                cursor: pointer;
+                top:0;
+                right:0;
+            }
+        }
+    }
+
+    .upload-container{
+        position: absolute;
+        // top:50;
+        border:solid 1px blue;
+    }
+}

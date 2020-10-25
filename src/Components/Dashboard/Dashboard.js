@@ -3,12 +3,12 @@ import "./Dashboard.scss"
 import FilterBar from "../FilterBar/FilterBar";
 import Issue from "../Issue/Issue";
 import AddIssue from "../AddIssue/AddIssue";
-import { Link, Redirect } from "react-router-dom"
+import { Link, Redirect, useHistory } from "react-router-dom"
 import Axios from "axios";
 import Loader from "../Loader/Loader"
 import Modal from "react-responsive-modal"
 import reducer from "../../Redux/Reducer"
-import initialState from "../../Redux/initialState"
+// import initialState from "../../Redux/initialState"
 
 
 export function Dashboard(props){
@@ -18,7 +18,10 @@ export function Dashboard(props){
     const [location, setLocation] = useState(false)
     const [listStyle, setListStyle] = useState(false)
     const [modalState, setModalState] = useState(false)
-    const [reduxState,dispatch] = useReducer(reducer,initialState)
+    // const [reduxState, dispatch] = useReducer(reducer,initialState)
+    const [noPosts, setNoPosts] = useState(false);
+
+    const history = useHistory();
 
     const handleRoute = (location) =>{
         setRedirect(true)
@@ -26,36 +29,35 @@ export function Dashboard(props){
     }
     useEffect(() =>{
         Axios.get('/api/get-user-data/').then(response =>{
-            dispatch({type:'update_user', payload:response.data})
+            if(!response.data){
+                history.push("/");
+            }
+            // dispatch({type:'update_user', payload:response.data})
         })
+
         Axios.get('/api/get-issues').then(response =>{
-            console.log("Got issues:", response.data)
-            dispatch({type:'update_posts', payload:response.data})
-            console.log("iSSUES IN STATE: ", issues)
-            console.log("iSSUES IN REDUX: ", reduxState)
+            if(!response.data.length){
+                setNoPosts(true);
+            }
+            // dispatch({type:'update_posts', payload:response.data})
             setIssues(response.data)
             
         })
+
     },[])
     let searchIssues = (term) =>{
-        console.log("term: ",term)
         let filteredArr =  issues.filter(e =>{
-            console.log("Checking :", e.name)
             return e.name.toUpperCase().startsWith(term.toUpperCase())
         })
-        console.log("Filtered : ", filteredArr)
         setFiltered(filteredArr)
         
     }
     let filterBy = (term) =>{
-        console.log("term: ", term)
         Axios.get(`/api/filter?term=${term}`).then(response =>{
-            console.log("Filtered By: ", response.data)
             setIssues(response.data)
         })
     }
     let openModal = () =>{
-        console.log("Modal triggered open")
         setModalState(true)
     }
     let closeModal = () =>{
@@ -68,7 +70,13 @@ export function Dashboard(props){
         'justify-content':'center',
         'align-items':'center'
     }
-    console.log("Redix State: ", reduxState)
+
+    let noPostsElement = (
+        <div className="no-posts-found">
+            <h1>No Issues Found!</h1>
+        </div>
+    );
+
     return(
         <div className = "dashboard-parent">
             <FilterBar filterByFn = {filterBy} searchIssuesFn = {searchIssues} setListStyle = {setListStyle} listStyle = {listStyle}/>
@@ -87,6 +95,7 @@ export function Dashboard(props){
                                 listStyle = {listStyle}
                                 description = {issue.description}
                                 urgency = {issue.urgency}
+                                key = {issue.issue_id}
                                 />
                             )
                         })
@@ -101,12 +110,15 @@ export function Dashboard(props){
                                         listStyle = {listStyle}
                                         description = {issue.description}
                                         urgency = {issue.urgency}
+                                        key = {issue.issue_id}
                                     />
                                 )
                             })
                         :
+                        noPosts ? 
+                            noPostsElement
+                            :
                         <Loader/>
-                        
                     }
                 
                 </div>

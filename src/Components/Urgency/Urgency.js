@@ -10,10 +10,10 @@ export function UrgencyCircle(props){
 }
 
 export default function Urgency(props){
-    const [state,updateState] = useState([1,2,3,4,5])
+    const [state, updateState] = useState([1,2,3,4,5])
     const mappedCircles = state.map(number =>{
         return (
-            <UrgencyCircle setUrgencyValueFn = {props.setUrgencyValueFn} num = {number} urgencyValue = {props.urgencyValue}/>
+            <UrgencyCircle setUrgencyValueFn = {props.setUrgencyValueFn} num = {number} urgencyValue = {props.urgencyValue} key={number}/>
         )
     })
     return(
