@@ -8,7 +8,7 @@ import Axios from "axios";
 import Loader from "../Loader/Loader"
 import Modal from "react-responsive-modal"
 import reducer from "../../Redux/Reducer"
-import initialState from "../../Redux/initialState"
+// import initialState from "../../Redux/initialState"
 
 
 export function Dashboard(props){
@@ -18,7 +18,7 @@ export function Dashboard(props){
     const [location, setLocation] = useState(false)
     const [listStyle, setListStyle] = useState(false)
     const [modalState, setModalState] = useState(false)
-    const [reduxState,dispatch] = useReducer(reducer,initialState)
+    // const [reduxState, dispatch] = useReducer(reducer,initialState)
     const [noPosts, setNoPosts] = useState(false);
 
     const history = useHistory();
@@ -32,21 +32,20 @@ export function Dashboard(props){
             if(!response.data){
                 history.push("/");
             }
-            dispatch({type:'update_user', payload:response.data})
+            // dispatch({type:'update_user', payload:response.data})
         })
 
         Axios.get('/api/get-issues').then(response =>{
             if(!response.data.length){
                 setNoPosts(true);
             }
-            dispatch({type:'update_posts', payload:response.data})
+            // dispatch({type:'update_posts', payload:response.data})
             setIssues(response.data)
             
         })
 
     },[])
     let searchIssues = (term) =>{
-        console.log("term: ",term)
         let filteredArr =  issues.filter(e =>{
             return e.name.toUpperCase().startsWith(term.toUpperCase())
         })
@@ -96,6 +95,7 @@ export function Dashboard(props){
                                 listStyle = {listStyle}
                                 description = {issue.description}
                                 urgency = {issue.urgency}
+                                key = {issue.issue_id}
                                 />
                             )
                         })
@@ -110,6 +110,7 @@ export function Dashboard(props){
                                         listStyle = {listStyle}
                                         description = {issue.description}
                                         urgency = {issue.urgency}
+                                        key = {issue.issue_id}
                                     />
                                 )
                             })

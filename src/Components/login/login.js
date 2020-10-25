@@ -4,14 +4,14 @@ import logo from "../../Images/Logos/headerLogo.png"
 import {Link, Redirect} from "react-router-dom"
 import Form from "../Hooks/Form"
 import Axios from "axios";
-import initialState from "../../Redux/initialState";
-import reducer from "../../Redux/Reducer";
+// import initialState from "../../Redux/initialState";
+// import reducer from "../../Redux/Reducer";
 
 export default function Login(){
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [value, setValue] = useState(false)
-    const [state,dispatch] = useReducer(reducer,initialState)
+    // const [state,dispatch] = useReducer(reducer,initialState)
     let login = () =>{
         console.log(email, password)
         if(email == "" || password == "") return;
@@ -23,7 +23,7 @@ export default function Login(){
             Axios.post('/api/login',body).then(response =>{
                 if(response.data.status == "success"){
                     console.log(response.data)
-                    dispatch({type:"update_user",payload:response.data.user})
+                    // dispatch({type:"update_user",payload:response.data.user})
                     setValue(true)
                 }
                 console.log(response.data)

@@ -1,23 +1,16 @@
 import React, {useState, useEffect, useReducer} from "react"
-// import "./login.scss"
-import logo from "../../Images/Logos/headerLogo.png"
 import {Link, Redirect} from "react-router-dom"
 import Axios from "axios";
 import FormInput from "../Hooks/Form"
-import {UserContext} from "../../Context/userContext"
-import initialState from "../../Redux/initialState";
-import reducer from "../../Redux/Reducer";
+// import initialState from "../../Redux/initialState";
+// import reducer from "../../Redux/Reducer";
 
 export default function Register(props){
     let email = FormInput("")
     let password = FormInput("")
     const [redirect, setRedirect] = useState(false)
-    const [state,dispatch] = useReducer(reducer,initialState)
+    // const [state,dispatch] = useReducer(reducer,initialState)
     
-    useEffect(() =>{
-        console.log("Component Mounted!", props)
-    })
-
     let register = () =>{
         if(email == "" || password == ""){
             return
@@ -30,14 +23,13 @@ export default function Register(props){
             console.log("Registering with ", body)
             Axios.post("/api/register",body).then(response =>{
                 if(response.data.status == "success"){
-                    dispatch({type:"update_user",payload:response.data})
+                    // dispatch({type:"update_user",payload:response.data})
                     setRedirect(true)
                 }
             })
         }
     }
 
-    console.log("State in redux:", state)
     return(
         <div className = "authentication-parent">
 

@@ -1,6 +1,6 @@
 import React, {useState,useEffect, useReducer} from "react"
-import reducer from "../../Redux/Reducer"
-import initialState from "../../Redux/initialState"
+// import reducer from "../../Redux/Reducer"
+// import initialState from "../../Redux/initialState"
 import "./IssuePage.scss"
 import Axios from "axios";
 import Loader from "../Loader/Loader"
@@ -16,7 +16,8 @@ export default function IssuePage(props){
     let [emojiToggle, setEmojiToggle] = useState(false)
     let [commentText, setCommentText] = useState('')
     let [width,setWidth] = useState(window.innerWidth)
-    const [state, dispatch] = useReducer(reducer,initialState)
+    // const [state, dispatch] = useReducer(reducer,initialState)
+    const [posts, setPosts] = useState([])
     const [noPosts, setNoPosts] = useState(false);
 
     let jsemoji = new JSEMOJI()
@@ -33,7 +34,8 @@ export default function IssuePage(props){
             if(!response.data.length){
                 setNoPosts(true);
             }
-            dispatch({type:'update_posts', payload:response.data})
+            setPosts(response.data);
+            // dispatch({type:'update_posts', payload:response.data})
         })
     },[])
 
@@ -44,11 +46,11 @@ export default function IssuePage(props){
 
 
     useEffect(() =>{
-        let result = state.posts.filter(element =>{
+        let result = posts.filter(element =>{
             return element.issue_id == props.match.params.id
         })
         setPostToShow(result)
-    },[state])
+    },[posts])
     let handleEmojiClick = (emoji,data) =>{
         let newEmoji = jsemoji.replace_colons(`:${data.name}:`)
         setCommentText(commentText + newEmoji)
@@ -82,9 +84,9 @@ export default function IssuePage(props){
     let mappedComments
     if(postToShow.length){
         if(postToShow[0].comments){
-            mappedComments = postToShow[0].comments.map(comment =>{
+            mappedComments = postToShow[0].comments.map((comment, index) =>{
                 return(
-                    <Comment comment={comment} />
+                    <Comment comment={comment} key = {index}/>
                 )
             })
             

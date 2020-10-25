@@ -7,7 +7,7 @@ import imageUpload from "../../Images/image-upload.png"
 import Urgency from "../Urgency/Urgency"
 import FormInput from "../Hooks/Form.js"
 import reducer from "../../Redux/Reducer"
-import initialState from "../../Redux/initialState"
+// import initialState from "../../Redux/initialState"
 import ImageModal from "../ImageModal/ImageModal";
 
 export default function AddIssue(props){
@@ -15,7 +15,7 @@ export default function AddIssue(props){
     const [urgencyValue,setUrgencyValue] = useState(0)
     const [images, setImages] = useState([])
     const [toggleUploader, setToggleUploader] = useState(true)
-    const [state,dispatch] = useReducer(reducer,initialState)
+    // const [state,dispatch] = useReducer(reducer,initialState)
     const nameValue = FormInput('')
     const descriptionValue = FormInput('')
     const imageValue = FormInput('')
@@ -24,10 +24,9 @@ export default function AddIssue(props){
     useEffect(() => {
         Axios.get("/api/get-user-data").then(response =>{
             if(!response.data){
-                console.log("No user, going home");
                 history.push("/");
             }
-            dispatch({type:"update_user",payload:response.data})
+            // dispatch({type:"update_user",payload:response.data})
         })
         
     }, [])

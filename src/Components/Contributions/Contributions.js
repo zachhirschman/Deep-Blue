@@ -1,12 +1,44 @@
-import React, {useState,useEffect} from "react"
+import React, { Component } from "react";
+import { connect } from 'react-redux';
 import "./Contributions.scss"
-import {Line} from "react-chartjs-2"
 
-export default function Contributions(){
+export class Contributions extends Component{
+
+    constructor(props){
+        super(props);
+        this.state = {
+            bio:""
+        }
+    }
+
+    render(){
+
+        return (
+            <div className="contributions-container">
+                <div>
+                    <h3>Bio:</h3>
+                    <input/>
+                </div>
+    
+                <button>Save</button>
+                
+            </div>
+        )
+    }
    
-    return (
-        <div className="contributions-container">
-            Contributions <br/>
+}
+
+const mapStateToProps = (state) => {
+    return{
+        currentUser:state.currentUser
+    }
+}
+
+export default connect(mapStateToProps, {})(Contributions);
+
+/* 
+
+Contributions <br/>
             Functionality:<br/>
                 Send / Receive messages:<br/>
                     Users can message the poster of an issues<br/>
@@ -17,6 +49,5 @@ export default function Contributions(){
                     Update Bio<br/>
                 Show Graph of user contributions over the last 3 months<br/>
                 Followed By<br/>
-                            </div>
-    )
-}
+
+*/

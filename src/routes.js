@@ -4,7 +4,7 @@ import Home from "./Components/Home/Home"
 import Register from "./Components/Register/Register"
 import Login from "./Components/login/login"
 import {Dashboard} from "./Components/Dashboard/Dashboard";
-import Contributions from "./Components/Contributions/Contributions";
+import {Contributions} from "./Components/Contributions/Contributions";
 import IssuePage from "./Components/IssuePage/IssuePage"
 
 export default (
